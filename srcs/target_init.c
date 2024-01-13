@@ -6,13 +6,27 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:01:55 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/04 13:35:14 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:40:28 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	assign_max(t_stack *node, t_stack **stack)
+void	target_reset(t_stack **stack)
+{
+	t_stack	*tmp;
+
+	tmp = *stack;
+	if (!tmp)
+		return ;
+	while (tmp != NULL)
+	{
+		tmp->target = NULL;
+		tmp = tmp->next;
+	}
+}
+
+void	assign_max(t_stack **node, t_stack **stack)
 {
 	int		max;
 	t_stack	*tmp;
@@ -22,22 +36,22 @@ void	assign_max(t_stack *node, t_stack **stack)
 	while (tmp != NULL)
 	{
 		if (tmp->data == max)
-			node->target = tmp;
+			(*node)->target = tmp;
 		tmp = tmp->next;
 	}
 }
 
-void	assign_min(t_stack *node, t_stack **stack)
+void	assign_min(t_stack **node, t_stack **stack)
 {
-	int		max;
+	int		min;
 	t_stack	*tmp;
 
-	max = min_value(*stack);
+	min = min_value(*stack);
 	tmp = *stack;
 	while (tmp != NULL)
 	{
-		if (tmp->data == max)
-			node->target = tmp;
+		if (tmp->data == min)
+			(*node)->target = tmp;
 		tmp = tmp->next;
 	}
 }
@@ -46,26 +60,24 @@ void	target_init_rev(t_stack **a, t_stack **b)
 {
 	t_stack	*tmpa;
 	t_stack	*tmpb;
-	int		diff;
-	int		tmpdiff;
+	long	tmpdiff;
 
 	tmpa = *a;
 	while (tmpa != NULL)
 	{
 		tmpb = *b;
-		tmpdiff = -2147483648;
+		tmpdiff = LONG_MAX;
 		while (tmpb != NULL)
 		{
-			diff = tmpa->data - tmpb->data;
-			if (diff < 0 && diff >= tmpdiff)
+			if (tmpb->data > tmpa->data && tmpb->data < tmpdiff)
 			{
-				tmpdiff = diff;
+				tmpdiff = tmpb->data;
 				tmpa->target = tmpb;
 			}
 			tmpb = tmpb->next;
 		}
 		if (!tmpa->target)
-			assign_min(tmpa, b);
+			assign_min(&tmpa, b);
 		tmpa = tmpa->next;
 	}
 }
@@ -74,26 +86,26 @@ void	target_init(t_stack **a, t_stack **b)
 {
 	t_stack	*tmpa;
 	t_stack	*tmpb;
-	int		diff;
-	int		tmpdiff;
+	long	tmpdiff;
 
+	if (*b == NULL)
+		return ;
 	tmpa = *a;
 	while (tmpa != NULL)
 	{
 		tmpb = *b;
-		tmpdiff = 2147483647;
+		tmpdiff = LONG_MIN;
 		while (tmpb != NULL)
 		{
-			diff = tmpa->data - tmpb->data;
-			if (diff > 0 && diff <= tmpdiff)
+			if (tmpb->data < tmpa->data && tmpb->data > tmpdiff)
 			{
-				tmpdiff = diff;
+				tmpdiff = tmpb->data;
 				tmpa->target = tmpb;
 			}
 			tmpb = tmpb->next;
 		}
 		if (!tmpa->target)
-			assign_max(tmpa, b);
+			assign_max(&tmpa, b);
 		tmpa = tmpa->next;
 	}
 }

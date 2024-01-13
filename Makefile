@@ -6,11 +6,11 @@
 #    By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/22 12:46:17 by lpetit            #+#    #+#              #
-#    Updated: 2024/01/05 13:15:14 by lpetit           ###   ########.fr        #
+#    Updated: 2024/01/11 11:47:15 by lpetit           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME= push_swap.out
+NAME= push_swap
 
 INCLUDES = -L./includes
 

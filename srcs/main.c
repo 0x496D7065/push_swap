@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:11:19 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/04 13:22:46 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:41:31 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ void	is_arg_digit(char **argv)
 	{
 		n = 0;
 		if (argv[i][0] == '-' || argv[i][0] == '+')
+		{
 			n = 1;
+			if (!argv[i][n])
+				exit_msg("Error\n");
+		}
 		while (argv[i][n])
 		{
 			if (!ft_isdigit(argv[i][n]))
@@ -79,52 +83,38 @@ t_stack	*ft_create_stack(int argc, char **argv)
 	return (tmp);
 }
 
-void	print_stack(t_stack *stack)
+/*void	print_stack(t_stack *stack)
 {
 	t_stack	*tmp;
 
 	tmp = stack;
 	while (tmp != NULL)
 	{
+		ft_printf("%s\n", "---------------");
 		ft_printf("%d\n", tmp->data);
-		//ft_printf("cost = %d\n", tmp->cost);
-		//if (tmp->target != NULL)
-			//ft_printf("target = %d\n", tmp->target->data);
-		//ft_printf("%s\n", "-------------------");
+		ft_printf("target =%d\n", tmp->target->data);
 		tmp = tmp->next;
 	}
-	ft_stackclear(&stack);
-}
+}*/
 
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
-	t_stack *b;
-	char	**tab;
-	int	split_count;
+	t_stack	*b;
 
 	if (argc >= 2)
 	{
 		b = NULL;
 		if (argc == 2)
-		{
-			tab = ft_split(argv[1], ' ');
-			split_count = string_init(tab);
-			a = ft_create_stack_str(split_count, tab);
-			ft_free_tab(tab);
-		}	
-		else if (argc > 2)
+			a = string_init(argv[1]);
+		else
 		{
 			arg_check(argc, argv);
 			a = ft_create_stack(argc, argv);
 		}
 		if (check_sort(a))
 			sort(&a, &b);
-		ft_printf("%s\n", "stack a");
-		print_stack(a);
-		ft_printf("%s\n", "stack b");
-		print_stack(b);
-		return (0);
 	}
+	ft_stackclear(&a);
 	return (0);
 }

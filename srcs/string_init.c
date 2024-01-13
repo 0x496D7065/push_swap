@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 15:41:33 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/02 12:03:21 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:43:03 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	is_str_valid(char **tab)
 		n = 0;
 		if (tab[i][0] == '-' || tab[i][0] == '+')
 			n = 1;
+		if (!tab[i][n])
+		{
+			ft_free_tab(tab);
+			exit_msg("Error\n");
+		}
 		while (tab[i][n])
 		{
 			if (!ft_isdigit(tab[i][n]))
@@ -105,14 +110,26 @@ t_stack	*ft_create_stack_str(int argc, char **tab)
 	return (tmp);
 }
 
-int	string_init(char **tab)
+t_stack	*string_init(char *str)
 {
-	int	i;
+	char	**tab;
+	t_stack	*stack;
+	int		i;
 
 	i = 0;
+	tab = ft_split(str, ' ');
+	if (!tab)
+		exit(1);
 	while (tab[i])
 		i++;
+	if (i == 0)
+	{
+		ft_free_tab(tab);
+		exit(0);
+	}
 	str_check_int_max(i, tab);
 	str_check_for_dup(i, tab);
-	return (i);
+	stack = ft_create_stack_str(i, tab);
+	ft_free_tab(tab);
+	return (stack);
 }

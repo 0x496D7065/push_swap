@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 19:41:12 by lpetit            #+#    #+#             */
-/*   Updated: 2023/12/09 20:06:45 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/01/11 18:03:31 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	push(t_stack **stack_dest, t_stack **stack_src, int c)
 	*stack_dest = (*stack_src);
 	*stack_src = tmp;
 	if (c == 'a')
-		ft_printf("%s\n", "push a");
+		ft_printf("%s\n", "pa");
 	if (c == 'b')
-		ft_printf("%s\n", "push b");
+		ft_printf("%s\n", "pb");
 }

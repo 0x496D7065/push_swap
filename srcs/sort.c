@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 13:36:13 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/05 13:01:22 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:41:20 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,25 @@ void	sort_3(t_stack **a)
 	return ;
 }
 
-void	bring_target_top(t_stack **a, t_stack **b, t_stack *target, int c)
+void	bring_target_top(t_stack **stack, t_stack *target, int c)
 {
-	if (c == 'a')
-		while (*a != target)
+	while (*stack != target)
+	{
+		if (c == 'a')
 		{
-			if (above_median(*a, target->data))
-				rotate(a, 'a');
+			if (above_median(*stack, target->data))
+				rotate(stack, 'a');
 			else
-				rev_rot(a, 'a');
+				rev_rot(stack, 'a');
 		}
-	else if (c == 'b')
-		while (*b != target)
+		else if (c == 'b')
 		{
-			if (above_median(*b, target->data))
-				rotate(b, 'b');
+			if (above_median(*stack, target->data))
+				rotate(stack, 'b');
 			else
-				rev_rot(b, 'b');
+				rev_rot(stack, 'b');
 		}
+	}
 }
 
 void	final_sort(t_stack **a)
@@ -66,49 +67,40 @@ void	final_sort(t_stack **a)
 			rev_rot(a, 'a');
 }
 
-void	sort_push_b(t_stack **a, t_stack **b)
+void	sort_push(t_stack **st1, t_stack **st2, int src, int dest)
 {
 	t_stack	*topush;
 
-	push(b, a, 'b');
-	push(b, a, 'b');
-	while (*a != NULL)
+	if (*st2 != NULL)
 	{
-		target_init(a, b);
-		topush = cost_analysis(a, b);
-		bring_target_top(a, b, topush, 'a');
-		bring_target_top(a, b, topush->target, 'b');
-		push(b, a, 'b');
+		topush = cost_analysis(st1, st2);
+		bring_target_top(st1, topush, src);
+		bring_target_top(st2, topush->target, dest);
 	}
-	while (*b != NULL)
-		push(a, b, 'a');
-	final_sort(a);
+	push(st2, st1, dest);
 }
 
 void	sort(t_stack **a, t_stack **b)
 {
-	if (ft_stacksize(*a) == 3)
+	if (ft_stacksize(*a) == 2)
 	{
-		sort_3(a);
+		swap(a, 'a');
 		return ;
 	}
-	if (ft_stacksize(*a) == 4)
+	while (ft_stacksize(*a) != 3)
 	{
-		push(b, a, 'b');
-		if (check_sort(*a))
-			sort_3(a);
-		target_init_rev(b, a);
-		while (*a != (*b)->target)
-		{
-			if (above_median(*a, (*b)->target->data))
-				rotate(a, 'a');
-			else
-				rev_rot(a, 'a');
-		}
-		push(a, b, 'a');
-		while (check_sort(*a))
-			rotate(a, 'a');
+		target_reset(a);
+		target_init(a, b);
+		sort_push(a, b, 'a', 'b');
 	}
-	else
-		sort_push_b(a, b);
+	if (check_sort(*a))
+		sort_3(a);
+	while (*b != NULL)
+	{
+		target_reset(b);
+		target_init_rev(b, a);
+		sort_push(b, a, 'b', 'a');
+	}
+	if (check_sort(*a))
+		final_sort(a);
 }
