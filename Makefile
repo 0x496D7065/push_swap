@@ -6,13 +6,17 @@
 #    By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/22 12:46:17 by lpetit            #+#    #+#              #
-#    Updated: 2024/01/11 11:47:15 by lpetit           ###   ########.fr        #
+#    Updated: 2024/02/22 15:20:31 by lpetit           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= push_swap
 
 INCLUDES = -L./includes
+
+LIBFT = includes/libft.a
+
+CC = gcc
 
 SRCS_DIR = ./srcs/
 
@@ -27,18 +31,23 @@ CFLAGS = -Wall -Werror -Wextra -I./includes
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
- 
+all: $(LIBFT) $(NAME)
+
 .c.o:
-	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDES)
- 
-$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(LIBFT):
+	$(MAKE) -C ./includes
+
+$(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(INCLUDES) -lftprintf -lft
 
+
 clean:
+	$(MAKE) -C ./includes clean
 	rm -rf $(OBJS)
 
 fclean:	clean
+	$(MAKE) -C ./includes fclean
 	rm -rf $(NAME)
 
-re:	fclean $(NAME)
+re:	fclean all
