@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:11:19 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/13 17:41:31 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/02/06 13:36:53 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	arg_check(int argc, char **argv)
 	while (i < argc)
 	{
 		dup = 1;
-		if (ft_atoi(argv[i]) > INT_MAX || ft_atoi(argv[i]) < INT_MIN)
+		if (ft_atoi(argv[i]) > INT_MAX || ft_atoi(argv[i]) < INT_MIN || 
+			ft_strlen(argv[i]) >= 18)
 			exit_msg("Error\n");
 		while (argv[i + dup])
 		{

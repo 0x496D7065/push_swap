@@ -6,7 +6,7 @@
 /*   By: lpetit <lpetit@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 15:41:33 by lpetit            #+#    #+#             */
-/*   Updated: 2024/01/13 17:43:03 by lpetit           ###   ########.fr       */
+/*   Updated: 2024/02/06 13:41:08 by lpetit           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	str_check_int_max(int argc, char **tab)
 	is_str_valid(tab);
 	while (i < argc)
 	{
-		if (ft_atoi(tab[i]) > INT_MAX || ft_atoi(tab[i]) < INT_MIN)
+		if (ft_atoi(tab[i]) > INT_MAX || ft_atoi(tab[i]) < INT_MIN || 
+			ft_strlen(tab[i]) >= 18)
 		{
 			ft_free_tab(tab);
 			exit_msg("Error\n");
